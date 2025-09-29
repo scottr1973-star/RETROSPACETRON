@@ -41,15 +41,34 @@
         border-radius:16px;padding:20px 24px;text-align:center;max-width:560px}
   .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
-  /* Mobile buttons only (no joystick) */
+  /* Mobile controls (UPDATED STYLES) */
   #mobileControls{position:absolute;inset:0;pointer-events:none;z-index:70}
-  #turnBtns{position:absolute;left:10px;bottom:10px;display:flex;gap:10px;pointer-events:auto}
+  
+  /* Container for the left turn button */
+  #leftControls{position:absolute;left:10px;bottom:10px;pointer-events:auto;}
+  /* Container for the right turn and boost buttons */
+  #rightControls{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:10px;align-items:flex-end;pointer-events:auto;}
+
   .round{width:72px;height:72px;border-radius:999px;border:0;background:rgba(255,255,255,.12);color:var(--fg);
          font-weight:900;letter-spacing:.6px;box-shadow:0 6px 14px rgba(0,0,0,.35)}
   #btnLeft::before{content:"⟲";font-size:30px}
   #btnRight::before{content:"⟳";font-size:30px}
-  #btnBoost{position:absolute;right:10px;bottom:10px;width:88px;height:88px;border-radius:999px;border:0;
-            background:linear-gradient(180deg,#ffd35a,#ff9e3d);color:#081017;font-weight:900;letter-spacing:.6px;pointer-events:auto}
+
+  /* Boost button style (MODIFIED) */
+  #btnBoost{
+    width:72px; /* Smaller */
+    height:72px; /* Smaller */
+    border-radius:999px;border:0;
+    background:linear-gradient(180deg,#ffd35a,#ff9e3d);
+    color:transparent; /* Hide text */
+    font-weight:900;letter-spacing:.6px;
+    pointer-events:auto;
+    /* Use base64 encoded SVG for 'BOOST' (YELLOW FILL) to prevent text selection */
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHRleHQgeD0iMzYiIHk9IjQ1IiBmb250LWZhbWlseT0ic3lzdGVtLXVpLC1hcHBsZS1zeXN0ZW0sU2Vnb2UgVUkiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNGRkZGMDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIuNnB4Ij5CT09TVDwvdGV4dD48L3N2Zz4=");
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 
   /* Banner for round/match messages (no alerts) */
   #banner{
@@ -103,11 +122,13 @@
   </div>
 
   <div id="mobileControls">
-    <div id="turnBtns">
+    <div id="leftControls">
       <button id="btnLeft" class="round" aria-label="Turn Left"></button>
-      <button id="btnRight" class="round" aria-label="Turn Right"></button>
     </div>
-    <button id="btnBoost">BOOST</button>
+    
+    <div id="rightControls">
+      <button id="btnBoost"></button> <button id="btnRight" class="round" aria-label="Turn Right"></button>
+    </div>
   </div>
   
   <div id="radarWrap">
