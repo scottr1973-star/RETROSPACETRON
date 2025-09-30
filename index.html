@@ -28,12 +28,19 @@
        color:var(--fg);font-weight:800;cursor:pointer;backdrop-filter:blur(3px)}
   .btn:active{transform:scale(.98)}
 
-  /* RADAR STYLES (FROM SPACETRON21) */
-  #radarWrap{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:6px;align-items:center;}
+  /* RADAR STYLES (FROM SPACETRON21) - MODIFIED */
+  #radarWrap{
+    position:absolute;
+    left:50%;
+    bottom:10px; /* MOVED DOWN: Adjusted from 40px to 10px */
+    transform:translateX(-50%);
+    z-index:80;
+    display:flex;
+    align-items:center;
+  }
   #radarCanvas{width:160px;height:160px;border-radius:10px;background:rgba(0,0,0,.5);
                border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(3px)}
-  #radarToolbar{display:flex;gap:6px;justify-content:center}
-  #btnRadar{font-size:12px;padding:6px 10px}
+  /* #radarToolbar removed */
 
   /* Overlays */
   .overlay{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:9999}
@@ -133,10 +140,7 @@
   
   <div id="radarWrap">
     <canvas id="radarCanvas" width="160" height="160"></canvas>
-    <div id="radarToolbar">
-      <button id="btnRadar" class="btn">Radar: M</button>
     </div>
-  </div>
 
   <div id="banner" class="info">Ready</div>
 </div>
@@ -171,7 +175,7 @@ const btnBoost=document.getElementById('btnBoost');
 const banner=document.getElementById('banner');
 const radarCanvas=document.getElementById('radarCanvas');
 const radarCtx=radarCanvas.getContext('2d');
-const btnRadar=document.getElementById('btnRadar');
+// const btnRadar=document.getElementById('btnRadar'); // Removed
 
 // Key tracking
 const keys = new Set();
@@ -566,7 +570,7 @@ btnBoost.addEventListener('touchstart', ()=>{ if(started) mobileBoostHeld=true; 
 btnBoost.addEventListener('touchend', ()=>{ mobileBoostHeld=false; }, {passive:true});
 btnBoost.addEventListener('click', ()=>{ 
   if(roundState==='waiting_start') { 
-    startRound(true); // Start the new match if waiting
+    startRound(false); // Start the new match if waiting
     roundState = 'playing';
   }
 });
@@ -666,15 +670,9 @@ function aiThink(dt){
   }
 }
 
-/* ===== Radar (from spacetron21) ===== */
+/* ===== Radar (from spacetron21) - MODIFIED ===== */
 const RADAR = { sizeIndex: 1, sizes: [140, 160, 200], maxSeg: 5000 };
-btnRadar.addEventListener('click', ()=>{
-  RADAR.sizeIndex = (RADAR.sizeIndex+1)%RADAR.sizes.length;
-  const s = RADAR.sizes[RADAR.sizeIndex];
-  radarCanvas.width = radarCanvas.height = s;
-  radarCanvas.style.width = radarCanvas.style.height = s+'px';
-  btnRadar.textContent = 'Radar: ' + (['S','M','L'][RADAR.sizeIndex]);
-});
+// Removed button event listener
 function drawRadar(){
   const s = radarCanvas.width, ctx = radarCtx;
   ctx.clearRect(0,0,s,s);
