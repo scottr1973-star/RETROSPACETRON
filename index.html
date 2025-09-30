@@ -367,11 +367,7 @@ function startRound(resetScores=false){
 
   if(resetScores){ youWins=aiWins=0; youWinsEl.textContent=0; aiWinsEl.textContent=0; round=1; roundEl.textContent=1; }
 
-  // Set to playing if the start button was pressed, or if we're resuming a round
-  if(roundState!=='waiting_start'){
-    setBanner(`Round ${round}: GO!`, 'info', 900);
-    roundState='playing';
-  }
+  // MODIFIED: Removed Banner/State changes from here.
   resetTimer=0;
 }
 function beginGameOnce(){
@@ -380,7 +376,7 @@ function beginGameOnce(){
   reallyRemove(startOverlay);
   audioStart();
   roundState = 'waiting_start';
-  setBanner('Press BOOST or Shift to start Round 1', 'info', 0);
+  // MODIFIED: Removed setBanner call here
 }
 
 btnStart.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); beginGameOnce(); });
@@ -398,7 +394,7 @@ btnRestart.onclick=()=>{
   startRound(true); 
   paused=false; pauseOverlay.style.display='none'; 
   roundState = 'waiting_start'; // Ensure new match waits for start signal
-  setBanner('Press BOOST or Shift to start Round 1', 'info', 0);
+  // MODIFIED: Removed setBanner call here
 };
 btnFull.onclick=()=>{ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.(); };
 
@@ -572,6 +568,7 @@ btnBoost.addEventListener('click', ()=>{
   if(roundState==='waiting_start') { 
     startRound(false); // Start the new match if waiting
     roundState = 'playing';
+    setBanner(`Round ${round}: GO!`, 'info', 900); // ADDED GO! banner here for mobile
   }
 });
 
@@ -765,6 +762,7 @@ requestAnimationFrame(function tick(now){
       if(boosting){
         startRound(false);
         roundState = 'playing';
+        setBanner(`Round ${round}: GO!`, 'info', 900); // ADDED GO! banner here for desktop
       }
       player.boost = 1.0;
     } else if(roundState==='playing'){
@@ -850,11 +848,11 @@ requestAnimationFrame(function tick(now){
           else setBanner('AI WINS THE MATCH', 'lose', 1600);
           youWins=aiWins=0; youWinsEl.textContent=0; aiWinsEl.textContent=0; round=1; roundEl.textContent=1;
           roundState = 'waiting_start'; 
-          setBanner('Press BOOST or Shift to start New Match', 'info', 0);
+          // MODIFIED: Removed setBanner call
         }else{
           round++; roundEl.textContent=round;
           roundState = 'waiting_start';
-          setBanner(`Press BOOST or Shift to start Round ${round}`, 'info', 0);
+          // MODIFIED: Removed setBanner call
         }
         startRound(false);
       }
